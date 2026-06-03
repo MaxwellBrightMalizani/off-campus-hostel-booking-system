@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Off Campus Listings{% endblock %}
+
+{% block content %}
+<h1>Available Off Campus Listings</h1>
+{% if listings %}
+    <div class="listing-grid">
+    {% for listing in listings %}
+        <article class="listing-card">
+            <h2>{{ listing.title }}</h2>
+            <p class="listing-address">{{ listing.address }}</p>
+            <p class="listing-description">{{ listing.description }}</p>
+            <p class="listing-price">Price: ${{ listing.price }}</p>
+            <a class="listing-link" href="{% url 'listings:listing_detail' listing.id %}">View details</a>
+        </article>
+    {% endfor %}
+    </div>
+{% else %}
+    <p>No listings are available right now.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f7f8fb;
+    color: #333;
+}
+
+.container {
+    width: min(1080px, 90%);
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.site-header {
+    background: #1f2937;
+    color: white;
+    padding: 1rem 0;
+}
+
+.site-header a {
+    color: white;
+    text-decoration: none;
+}
+
+.site-header nav a {
+    margin-left: 1rem;
+}
+
+.listing-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.listing-card,
+.listing-detail {
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.listing-card h2,
+.listing-detail h1 {
+    margin-top: 0;
+}
+
+.listing-link,
+.button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.75rem 1.2rem;
+    background: #2563eb;
+    color: white;
+    border-radius: 999px;
+    text-decoration: none;
+}
+
+.site-footer {
+    background: #111827;
+    color: #d1d5db;
+    padding: 1rem 0;
+    text-align: center;
+}
