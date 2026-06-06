@@ -7,6 +7,7 @@ from .models import Listing
 DEFAULT_LISTINGS = [
     SimpleNamespace(
         id=1,
+        pk=1,
         title='Cozy shared room near campus',
         description='A quiet room with study space, free Wi-Fi, and easy access to local shops.',
         price='150.00',
@@ -14,6 +15,7 @@ DEFAULT_LISTINGS = [
     ),
     SimpleNamespace(
         id=2,
+        pk=2,
         title='Affordable studio apartment',
         description='Private studio with kitchenette, shared laundry, and close bus service.',
         price='260.00',
