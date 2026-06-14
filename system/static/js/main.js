@@ -85,7 +85,28 @@ document.addEventListener('DOMContentLoaded', function() {
       btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Searching...';
     });
   }
+
+  const themeToggle = document.getElementById('darkModeToggle');
+  if (themeToggle) {
+    const savedTheme = localStorage.getItem('theme');
+    const darkMode = savedTheme === 'dark';
+    setTheme(darkMode);
+
+    themeToggle.addEventListener('click', function() {
+      const isDark = document.body.classList.toggle('dark-mode');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      setTheme(isDark);
+    });
+  }
 });
+
+function setTheme(isDark) {
+  document.body.classList.toggle('dark-mode', isDark);
+  const themeToggle = document.getElementById('darkModeToggle');
+  if (themeToggle) {
+    themeToggle.innerHTML = isDark ? '<i class="fas fa-sun me-1"></i>Light mode' : '<i class="fas fa-moon me-1"></i>Dark mode';
+  }
+}
 
 // Animate number counters
 function animateCounters() {

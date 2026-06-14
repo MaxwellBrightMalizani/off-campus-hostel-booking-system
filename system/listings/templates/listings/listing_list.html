@@ -11,7 +11,7 @@
             <h2>{{ listing.title }}</h2>
             <p class="listing-address">{{ listing.address }}</p>
             <p class="listing-description">{{ listing.description }}</p>
-            <p class="listing-price">Price: ${{ listing.price }}</p>
+            <p class="listing-price">Price: MWK {{ listing.price }}</p>
             <a class="listing-link" href="{% url 'listings:listing_detail' listing.id %}">View details</a>
         </article>
     {% endfor %}

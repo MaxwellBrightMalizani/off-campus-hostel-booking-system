@@ -7,7 +7,7 @@
     <h1>{{ listing.title }}</h1>
     <p class="listing-address">{{ listing.address }}</p>
     <p class="listing-description">{{ listing.description }}</p>
-    <p class="listing-price">Price: ${{ listing.price }}</p>
+    <p class="listing-price">Price: MWK {{ listing.price }}</p>
     <a class="button" href="{% url 'listings:listing_list' %}">Back to listings</a>
 </article>
 {% endblock %}
