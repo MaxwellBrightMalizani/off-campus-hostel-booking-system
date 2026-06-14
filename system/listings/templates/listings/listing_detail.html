@@ -3,11 +3,31 @@
 {% block title %}{{ listing.title }}{% endblock %}
 
 {% block content %}
-<article class="listing-detail">
-    <h1>{{ listing.title }}</h1>
-    <p class="listing-address">{{ listing.address }}</p>
-    <p class="listing-description">{{ listing.description }}</p>
-    <p class="listing-price">Price: ${{ listing.price }}</p>
-    <a class="button" href="{% url 'listings:listing_list' %}">Back to listings</a>
-</article>
+<div class="container py-4">
+  <div class="card p-4">
+    <h1 class="mb-3">{{ listing.title }}</h1>
+    <p class="mb-2"><strong>Address:</strong> {{ listing.address }}</p>
+    <p class="mb-3">{{ listing.description }}</p>
+    <p class="mb-3"><strong>Price:</strong> ${{ listing.price }}</p>
+
+    {% if user.is_authenticated %}
+      {% if existing_booking %}
+        <div class="alert alert-info">
+          You have a pending booking request for this listing. Check your <a href="{% url 'listings:booking_dashboard' %}">dashboard</a> for updates.
+        </div>
+      {% else %}
+        <form method="post" action="{% url 'listings:create_booking' listing.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success">Request Booking</button>
+          <a class="btn btn-outline-secondary ms-2" href="{% url 'listings:listing_list' %}">Back to listings</a>
+        </form>
+      {% endif %}
+    {% else %}
+      <div class="alert alert-warning">
+        <p>Please <a href="{% url 'login' %}">login</a> to request a booking.</p>
+      </div>
+      <a class="btn btn-outline-secondary" href="{% url 'listings:listing_list' %}">Back to listings</a>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}
