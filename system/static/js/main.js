@@ -104,7 +104,8 @@ function setTheme(isDark) {
   document.body.classList.toggle('dark-mode', isDark);
   const themeToggle = document.getElementById('darkModeToggle');
   if (themeToggle) {
-    themeToggle.innerHTML = isDark ? '<i class="fas fa-sun me-1"></i>Light mode' : '<i class="fas fa-moon me-1"></i>Dark mode';
+    themeToggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+    themeToggle.classList.toggle('is-dark', isDark);
   }
 }
 
