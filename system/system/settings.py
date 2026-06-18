@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap5',
-    'system.Accounts.apps.AccountsConfig',
+    'accounts.apps.AccountsConfig',
     'listings.apps.ListingsConfig',
 ]
 
@@ -80,7 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'system.Accounts.context_processors.user_role',
+                'accounts.context_processors.user_role',
             ],
         },
     },

@@ -3,20 +3,47 @@
 {% block title %}Off Campus Listings{% endblock %}
 
 {% block content %}
-<h1>Available Off Campus Listings</h1>
-{% if listings %}
-    <div class="listing-grid">
-    {% for listing in listings %}
-        <article class="listing-card">
-            <h2>{{ listing.title }}</h2>
-            <p class="listing-address">{{ listing.address }}</p>
-            <p class="listing-description">{{ listing.description }}</p>
-            <p class="listing-price">Price: ${{ listing.price }}</p>
-            <a class="listing-link" href="{% url 'listings:listing_detail' listing.id %}">View details</a>
-        </article>
-    {% endfor %}
+<section class="listings-page py-5">
+  <div class="container">
+    <div class="listings-heading d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+      <div>
+        <span class="section-kicker">Hostels</span>
+        <h1 class="mb-1">Available Off-Campus Listings</h1>
+        <p class="text-muted mb-0">Browse hostel options, compare prices, and request a booking from the detail page.</p>
+      </div>
+      <a class="btn btn-success" href="{% url 'listings:home' %}">
+        <i class="fas fa-search me-1"></i>New Search
+      </a>
     </div>
-{% else %}
-    <p>No listings are available right now.</p>
-{% endif %}
+
+    {% if listings %}
+      <div class="listing-grid">
+      {% for listing in listings %}
+        <article class="listing-card hostel-container">
+          <div class="listing-card-top">
+            <div class="hostel-icon"><i class="fas fa-building"></i></div>
+            <span class="availability-pill">Available</span>
+          </div>
+          <h2>{{ listing.title }}</h2>
+          <p class="listing-address"><i class="fas fa-location-dot me-1"></i>{{ listing.address }}</p>
+          <p class="listing-description">{{ listing.description }}</p>
+          <div class="listing-footer">
+            <p class="listing-price mb-0">MWK {{ listing.price }}<span>/month</span></p>
+            <div class="listing-actions">
+              <a class="btn btn-outline-success btn-sm" href="{% url 'listings:listing_detail' listing.id %}">View Details</a>
+              <a class="btn btn-success btn-sm" href="{% url 'listings:listing_detail' listing.id %}">Book Now</a>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <i class="fas fa-house-circle-exclamation"></i>
+        <h2>No listings are available right now.</h2>
+        <a class="btn btn-outline-success" href="{% url 'listings:home' %}">Back Home</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
 {% endblock %}

@@ -34,7 +34,7 @@ class CustomUser(AbstractUser):
     )
 
     USERNAME_FIELD  = 'email'
-    REQUIRED_FIELDS = []   # only email + password required at createsuperuser
+    REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 
@@ -50,4 +50,4 @@ class CustomUser(AbstractUser):
         return self.user_type == self.UserType.OWNER
 
     def is_admin_user(self):
-        return self.user_type == self.UserType.ADMIN
+        return self.is_superuser or self.user_type == self.UserType.ADMIN
