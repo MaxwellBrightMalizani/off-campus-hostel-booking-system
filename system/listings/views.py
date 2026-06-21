@@ -74,8 +74,34 @@ def create_booking(request, pk):
     if request.method != 'POST':
         return redirect('listings:listing_detail', pk=pk)
 
-    listing = get_object_or_404(Listing, pk=pk)
+    # Prefer the DB record; fall back to DEFAULT_LISTINGS so booking works
+    # even when the DB is empty.
+    try:
+        listing = get_object_or_404(Listing, pk=pk)
+    except Exception:
+        # DEFAULT_LISTINGS are SimpleNamespace objects (not Listing models).
+        # Create missing Listing rows in DB so Booking FK constraints work.
+        from django.db import transaction
+
+        defaults = next((item for item in DEFAULT_LISTINGS if item.id == pk), None)
+        if defaults is None:
+            from django.http import Http404
+            raise Http404('Listing not found')
+
+        with transaction.atomic():
+            listing, created = Listing.objects.get_or_create(
+                pk=defaults.pk,
+                defaults={
+                    'title': defaults.title,
+                    'description': defaults.description,
+                    'price': defaults.price,
+                    'address': defaults.address,
+                },
+            )
+
+
     pending_exists = Booking.objects.filter(
+
         user=request.user,
         listing=listing,
         status=Booking.STATUS_PENDING,
