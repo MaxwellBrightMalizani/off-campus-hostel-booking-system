@@ -18,28 +18,10 @@
           </form>
         </div>
       </div>
-      <div class="col-lg-6 mt-5 mt-lg-0 text-center">
-        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80" class="hero-img" alt="Modern apartment">
-      </div>
-    </div>
-    <!-- Features -->
-    <div class="row g-3 mt-5">
-      <div class="col-md-4">
-        <div class="feature-card">
-          <div class="feature-icon bg-success-soft"><i class="fas fa-shield-alt text-success"></i></div>
-          <div><strong>Verified Properties</strong><p class="small text-muted mb-0">All properties are verified for your safety.</p></div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="feature-card">
-          <div class="feature-icon bg-success-soft"><i class="fas fa-lock text-success"></i></div>
-          <div><strong>Secure Bookings</strong><p class="small text-muted mb-0">Book with confidence through our platform.</p></div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="feature-card">
-          <div class="feature-icon bg-success-soft"><i class="fas fa-wallet text-success"></i></div>
-          <div><strong>Easy Payments</strong><p class="small text-muted mb-0">Multiple payment options for your convenience.</p></div>
+      <div class="col-lg-6 mt-5 mt-lg-0">
+        <div class="hero-visual p-5 rounded-4 border border-success-subtle text-center">
+          <h2 class="fw-bold">Find the right hostel without distractions.</h2>
+          <p class="text-muted mb-0">Simple information, clear pricing, and a clean browsing experience.</p>
         </div>
       </div>
     </div>
@@ -49,8 +31,10 @@
 <!-- CTA Banner -->
 <div class="cta-banner">
   <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
-    <div><p class="mb-0 fw-semibold">Book hostel of your choice</p>
-      <small>Your off-campus home, just a click away.</small></div>
+    <div>
+      <p class="mb-0 fw-semibold">Book hostel of your choice</p>
+      <small>Your off-campus home, just a click away.</small>
+    </div>
   </div>
 </div>
 
@@ -59,21 +43,20 @@
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="fw-bold">Featured Properties</h2>
-      <a href="{% url 'listings:listing_list' %}" class="btn btn-outline-success">View All →</a>
+      <a href="{% url 'listings:listing_list' %}" class="btn btn-outline-success">View All</a>
     </div>
     <div class="row g-4">
       {% for listing in featured %}
       <div class="col-md-4">
-        <div class="property-card">
-          <div class="property-img-wrap">
-            <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&q=80" class="property-img" alt="{{ listing.title }}">
-            <a href="#" class="save-btn" title="Save"><i class="fas fa-heart"></i></a>
-          </div>
-          <div class="p-3">
+        <div class="property-card h-100">
+          <div class="p-3 d-flex flex-column h-100">
             <h6 class="fw-bold mb-2">{{ listing.title }}</h6>
             <p class="text-muted small mb-2"><i class="fas fa-map-marker-alt me-1 text-success"></i>{{ listing.address }}</p>
             <p class="text-success fw-bold mb-3">MWK {{ listing.price|floatformat:0 }}<small class="text-muted fw-normal">/month</small></p>
-            <a href="{% url 'listings:listing_detail' listing.pk %}" class="btn btn-outline-success btn-sm w-100">View Details</a>
+            <div class="d-flex gap-2 mt-auto">
+              <a href="{% url 'listings:listing_detail' listing.pk %}" class="btn btn-outline-success btn-sm flex-fill">View Details</a>
+              <a href="{% url 'listings:listing_detail' listing.pk %}" class="btn btn-success btn-sm flex-fill">Book</a>
+            </div>
           </div>
         </div>
       </div>

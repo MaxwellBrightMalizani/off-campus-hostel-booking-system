@@ -1,7 +1,10 @@
 from types import SimpleNamespace
 
-from django.shortcuts import render, get_object_or_404
-from .models import Listing
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
+
+from .models import Booking, Listing
 
 
 DEFAULT_LISTINGS = [
@@ -51,4 +54,82 @@ def listing_detail(request, pk):
         listing = next((item for item in DEFAULT_LISTINGS if item.id == pk), None)
         if listing is None:
             raise
-    return render(request, 'listings/listing_detail.html', {'listing': listing})
+
+    existing_booking = None
+    if request.user.is_authenticated and isinstance(listing, Listing):
+        existing_booking = Booking.objects.filter(
+            user=request.user,
+            listing=listing,
+            status=Booking.STATUS_PENDING,
+        ).first()
+
+    return render(request, 'listings/listing_detail.html', {
+        'listing': listing,
+        'existing_booking': existing_booking,
+    })
+
+
+@login_required
+def create_booking(request, pk):
+    if request.method != 'POST':
+        return redirect('listings:listing_detail', pk=pk)
+
+    # Prefer the DB record; fall back to DEFAULT_LISTINGS so booking works
+    # even when the DB is empty.
+    try:
+        listing = get_object_or_404(Listing, pk=pk)
+    except Exception:
+        # DEFAULT_LISTINGS are SimpleNamespace objects (not Listing models).
+        # Create missing Listing rows in DB so Booking FK constraints work.
+        from django.db import transaction
+
+        defaults = next((item for item in DEFAULT_LISTINGS if item.id == pk), None)
+        if defaults is None:
+            from django.http import Http404
+            raise Http404('Listing not found')
+
+        with transaction.atomic():
+            listing, created = Listing.objects.get_or_create(
+                pk=defaults.pk,
+                defaults={
+                    'title': defaults.title,
+                    'description': defaults.description,
+                    'price': defaults.price,
+                    'address': defaults.address,
+                },
+            )
+
+
+    pending_exists = Booking.objects.filter(
+
+        user=request.user,
+        listing=listing,
+        status=Booking.STATUS_PENDING,
+    ).exists()
+
+    if pending_exists:
+        messages.warning(request, 'You already have a pending booking request for this listing.')
+        return redirect('listings:booking_dashboard')
+
+    Booking.objects.create(user=request.user, listing=listing)
+    messages.success(request, 'Booking request submitted. You can track it on your dashboard.')
+    return redirect('listings:booking_dashboard')
+
+
+@login_required
+def booking_dashboard(request):
+    bookings = Booking.objects.filter(user=request.user).select_related('listing')
+    return render(request, 'bookings/dashboard.html', {'bookings': bookings})
+
+
+@login_required
+def cancel_booking(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id, user=request.user)
+    if booking.status != Booking.STATUS_PENDING:
+        messages.warning(request, 'Only pending bookings can be canceled.')
+    else:
+        booking.status = Booking.STATUS_CANCELLED
+        booking.save(update_fields=['status', 'updated_at'])
+        messages.success(request, 'Your booking request has been canceled.')
+    return redirect('listings:booking_dashboard')
+
