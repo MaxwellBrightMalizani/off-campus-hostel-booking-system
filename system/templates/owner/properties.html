@@ -1,0 +1,40 @@
+{% extends 'owner/base.html' %}
+
+{% block title %}Manage Hostels{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+      <h1 class="mb-1">Manage Hostels</h1>
+      <p class="text-muted mb-0">Create and update your hostel listings.</p>
+    </div>
+    <a class="btn btn-success" href="{% url 'listings:owner_property_create' %}">
+      <i class="fas fa-plus me-1"></i>Add Hostel
+    </a>
+  </div>
+
+  {% if listings %}
+    <div class="row g-3">
+      {% for listing in listings %}
+        <div class="col-12 col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ listing.title }}</h5>
+              <p class="text-muted mb-2">{{ listing.address }}</p>
+              <p class="mb-3">MWK {{ listing.price }} / month</p>
+              <div class="d-flex gap-2">
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'listings:owner_property_update' listing.id %}">Edit</a>
+                <a class="btn btn-outline-secondary btn-sm" href="{% url 'listings:listing_detail' listing.id %}">View</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">No hostels added yet.</div>
+  {% endif %}
+</div>
+{% endblock %}
+

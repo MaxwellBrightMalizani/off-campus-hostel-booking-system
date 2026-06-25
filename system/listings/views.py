@@ -4,7 +4,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
+from accounts.decorators import owner_required
+
+from .forms import ListingForm
 from .models import Booking, Listing
+
 
 
 DEFAULT_LISTINGS = [
@@ -132,4 +136,87 @@ def cancel_booking(request, booking_id):
         booking.save(update_fields=['status', 'updated_at'])
         messages.success(request, 'Your booking request has been canceled.')
     return redirect('listings:booking_dashboard')
+
+
+@owner_required
+def owner_dashboard(request):
+    listings = Listing.objects.filter(owner=request.user).prefetch_related('bookings')
+    bookings = Booking.objects.filter(listing__owner=request.user).select_related('listing', 'user')
+    return render(
+        request,
+        'owner/dashboard.html',
+        {
+            'listings': listings,
+            'bookings': bookings,
+        },
+    )
+
+
+@owner_required
+def owner_booking_decide(request, booking_id):
+    booking = get_object_or_404(
+        Booking,
+        pk=booking_id,
+        listing__owner=request.user,
+    )
+
+    if request.method != 'POST':
+        return redirect('listings:owner_dashboard')
+
+    action = request.POST.get('action')
+    if booking.status != Booking.STATUS_PENDING:
+        messages.warning(request, 'Only pending requests can be updated.')
+        return redirect('listings:owner_dashboard')
+
+    if action == 'approve':
+        booking.status = Booking.STATUS_APPROVED
+        booking.save(update_fields=['status', 'updated_at'])
+        messages.success(request, 'Booking request approved.')
+    elif action == 'decline':
+        booking.status = Booking.STATUS_DECLINED
+        booking.save(update_fields=['status', 'updated_at'])
+        messages.success(request, 'Booking request declined.')
+    else:
+        messages.error(request, 'Invalid action.')
+
+    return redirect('listings:owner_dashboard')
+
+
+@owner_required
+def owner_property_list(request):
+    listings = Listing.objects.filter(owner=request.user).order_by('-created_at')
+    return render(request, 'owner/properties.html', {'listings': listings})
+
+
+@owner_required
+def owner_property_create(request):
+    if request.method == 'POST':
+        form = ListingForm(request.POST)
+        if form.is_valid():
+            listing = form.save(commit=False)
+            listing.owner = request.user
+            listing.save()
+            messages.success(request, 'Hostel details created.')
+            return redirect('listings:owner_property_list')
+    else:
+        form = ListingForm()
+
+    return render(request, 'owner/property_form.html', {'form': form, 'mode': 'create'})
+
+
+@owner_required
+def owner_property_update(request, pk):
+    listing = get_object_or_404(Listing, pk=pk, owner=request.user)
+
+    if request.method == 'POST':
+        form = ListingForm(request.POST, instance=listing)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Hostel details updated.')
+            return redirect('listings:owner_property_list')
+    else:
+        form = ListingForm(instance=listing)
+
+    return render(request, 'owner/property_form.html', {'form': form, 'mode': 'edit', 'listing': listing})
+
 
