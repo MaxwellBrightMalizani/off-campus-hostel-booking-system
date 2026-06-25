@@ -26,7 +26,6 @@
         </div>
 
         <div class="card-body">
-          {% with listing_bookings=bookings|dictsort:"id" %}{% endwith %}
           <div class="table-responsive">
             <table class="table table-bordered align-middle">
               <thead class="table-light">
@@ -50,6 +49,8 @@
                           <span class="badge bg-success">Approved</span>
                         {% elif booking.status == 'declined' %}
                           <span class="badge bg-danger">Declined</span>
+                        {% elif booking.status == 'cancelled' %}
+                          <span class="badge bg-secondary">Cancelled</span>
                         {% else %}
                           <span class="badge bg-secondary">{{ booking.status }}</span>
                         {% endif %}
@@ -76,6 +77,9 @@
               </tbody>
             </table>
           </div>
+          {% if not bookings %}
+            <div class="alert alert-info mt-3">No booking requests yet for this hostel.</div>
+          {% endif %}
         </div>
       </div>
     {% endfor %}
