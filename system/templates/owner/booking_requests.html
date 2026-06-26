@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Requests - Owner Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-list-check text-success me-2"></i> Booking Requests</h1>
+        <span class="badge bg-success fs-6">{{ bookings.count }} {{ bookings.count|pluralize:"Request,Requests" }}</span>
+      </div>
+
+      <!-- Tabs for filtering -->
+      <ul class="nav nav-tabs mb-4" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">
+            <i class="fas fa-clock me-2"></i> Pending
+            <span class="badge bg-warning ms-2">{{ bookings.count }}</span>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="confirmed-tab" data-bs-toggle="tab" data-bs-target="#confirmed" type="button" role="tab">
+            <i class="fas fa-check me-2"></i> Confirmed
+            <span class="badge bg-success ms-2">0</span>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected" type="button" role="tab">
+            <i class="fas fa-times me-2"></i> Rejected
+            <span class="badge bg-danger ms-2">0</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Pending Requests -->
+        <div class="tab-pane fade show active" id="pending" role="tabpanel">
+          {% if bookings %}
+            <div class="row g-3">
+              {% for booking in bookings %}
+                <div class="col-lg-6">
+                  <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                      <!-- Student Info -->
+                      <div class="mb-3 pb-3 border-bottom">
+                        <h6 class="mb-1">
+                          <i class="fas fa-user-circle text-success me-2"></i>
+                          {{ booking.student.get_full_name|default:booking.student.username }}
+                        </h6>
+                        <small class="text-muted">{{ booking.student.email }}</small>
+                      </div>
+
+                      <!-- Listing Info -->
+                      <div class="mb-3">
+                        <h5 class="mb-1">{{ booking.listing.title }}</h5>
+                        <p class="text-muted mb-2 small">
+                          <i class="fas fa-map-marker-alt"></i> {{ booking.listing.address }}
+                        </p>
+                        <div class="bg-light p-2 rounded">
+                          <strong class="text-success">${{ booking.listing.price }}/month</strong>
+                        </div>
+                      </div>
+
+                      <!-- Booking Details -->
+                      <div class="row g-2 mb-3 pb-3 border-bottom">
+                        <div class="col-md-6">
+                          <small class="text-muted d-block">Check-in</small>
+                          <strong>{{ booking.check_in_date|date:"M d, Y" }}</strong>
+                        </div>
+                        <div class="col-md-6">
+                          <small class="text-muted d-block">Check-out</small>
+                          <strong>{{ booking.check_out_date|date:"M d, Y" }}</strong>
+                        </div>
+                        <div class="col-md-6">
+                          <small class="text-muted d-block">Rooms Needed</small>
+                          <strong>{{ booking.number_of_rooms }}</strong>
+                        </div>
+                        <div class="col-md-6">
+                          <small class="text-muted d-block">Requested</small>
+                          <strong>{{ booking.created_at|date:"M d, Y" }}</strong>
+                        </div>
+                      </div>
+
+                      <!-- Student Notes -->
+                      {% if booking.notes %}
+                        <div class="bg-light p-2 rounded mb-3">
+                          <small class="text-muted d-block mb-1">
+                            <i class="fas fa-comment me-1"></i> Student Notes:
+                          </small>
+                          <small>{{ booking.notes }}</small>
+                        </div>
+                      {% endif %}
+
+                      <!-- Action Buttons -->
+                      <div class="d-flex gap-2 pt-2">
+                        <button class="btn btn-sm btn-success flex-fill" onclick="confirmBooking({{ booking.id }})">
+                          <i class="fas fa-check me-1"></i> Confirm
+                        </button>
+                        <button class="btn btn-sm btn-danger flex-fill" onclick="rejectBooking({{ booking.id }})">
+                          <i class="fas fa-times me-1"></i> Reject
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="card border-0 shadow-sm text-center py-5">
+              <div class="card-body">
+                <i class="fas fa-inbox text-muted" style="font-size: 3rem;"></i>
+                <h5 class="mt-3 mb-2">No Pending Requests</h5>
+                <p class="text-muted">You don't have any pending booking requests at the moment.</p>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Confirmed Requests -->
+        <div class="tab-pane fade" id="confirmed" role="tabpanel">
+          <div class="card border-0 shadow-sm text-center py-5">
+            <div class="card-body">
+              <i class="fas fa-inbox text-muted" style="font-size: 3rem;"></i>
+              <h5 class="mt-3 mb-2">No Confirmed Bookings</h5>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rejected Requests -->
+        <div class="tab-pane fade" id="rejected" role="tabpanel">
+          <div class="card border-0 shadow-sm text-center py-5">
+            <div class="card-body">
+              <i class="fas fa-inbox text-muted" style="font-size: 3rem;"></i>
+              <h5 class="mt-3 mb-2">No Rejected Bookings</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function confirmBooking(bookingId) {
+  alert('Booking confirmation feature coming soon!');
+}
+
+function rejectBooking(bookingId) {
+  alert('Booking rejection feature coming soon!');
+}
+</script>
+{% endblock %}

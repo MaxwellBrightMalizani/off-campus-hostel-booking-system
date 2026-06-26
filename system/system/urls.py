@@ -16,8 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from listings import views as listings_views
+
+# Create namespaced URLs for student and owner
+student_urls = [
+    path('bookings/', listings_views.student_bookings, name='bookings'),
+]
+
+owner_urls = [
+    path('booking-requests/', listings_views.owner_booking_requests, name='booking_requests'),
+]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('listings.urls')),
+    path('student/', include((student_urls, 'student'))),
+    path('owner/', include((owner_urls, 'owner'))),
 ]

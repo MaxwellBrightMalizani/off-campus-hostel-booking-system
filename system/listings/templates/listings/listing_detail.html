@@ -3,11 +3,53 @@
 {% block title %}{{ listing.title }}{% endblock %}
 
 {% block content %}
-<article class="listing-detail">
-    <h1>{{ listing.title }}</h1>
-    <p class="listing-address">{{ listing.address }}</p>
-    <p class="listing-description">{{ listing.description }}</p>
-    <p class="listing-price">Price: ${{ listing.price }}</p>
-    <a class="button" href="{% url 'listings:listing_list' %}">Back to listings</a>
-</article>
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <article class="listing-detail card border-0 shadow-sm p-4">
+        <h1 class="mb-3">{{ listing.title }}</h1>
+        <p class="listing-address text-muted mb-2">
+          <i class="fas fa-map-marker-alt text-success"></i> {{ listing.address }}
+        </p>
+        
+        <div class="mb-4 pb-4 border-bottom">
+          <h3 class="text-success mb-2">${{ listing.price }}<span class="fs-6 text-muted">/month</span></h3>
+          <p class="listing-description">{{ listing.description }}</p>
+        </div>
+
+        <!-- Booking Status / Actions -->
+        <div class="mb-4">
+          {% if user.is_authenticated %}
+            {% if user_booking %}
+              <div class="alert alert-info mb-0">
+                <strong>Your Booking Status:</strong>
+                <span class="badge 
+                  {% if user_booking.is_pending %}bg-warning{% elif user_booking.is_confirmed %}bg-success{% else %}bg-danger{% endif %}">
+                  {{ user_booking.get_status_display }}
+                </span>
+                <p class="mb-0 mt-2 small">
+                  Submitted on {{ user_booking.created_at|date:"M d, Y" }}
+                </p>
+              </div>
+            {% else %}
+              <a class="btn btn-success btn-lg" href="{% url 'listings:booking_create' listing.pk %}">
+                <i class="fas fa-calendar-check me-2"></i> Book Now
+              </a>
+            {% endif %}
+          {% else %}
+            <a class="btn btn-success btn-lg" href="{% url 'listings:home' %}">
+              <i class="fas fa-sign-in-alt me-2"></i> Login to Book
+            </a>
+          {% endif %}
+        </div>
+
+        <div class="mt-4 pt-3 border-top">
+          <a class="btn btn-outline-secondary" href="{% url 'listings:listing_list' %}">
+            <i class="fas fa-arrow-left me-2"></i> Back to listings
+          </a>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
 {% endblock %}

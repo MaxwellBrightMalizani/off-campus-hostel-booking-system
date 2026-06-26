@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}Book {{ listing.title }} - HostelHub{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <h1 class="mb-4">Book {{ listing.title }}</h1>
+      
+      <!-- Listing Summary -->
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h5 class="card-title">{{ listing.title }}</h5>
+              <p class="text-muted mb-2">
+                <i class="fas fa-map-marker-alt"></i> {{ listing.address }}
+              </p>
+              <p class="card-text small">{{ listing.description }}</p>
+            </div>
+            <div class="col-md-4 text-end">
+              <h3 class="text-success mb-0">${{ listing.price }}<span class="fs-6 text-muted">/month</span></h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Form -->
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Submit Your Booking Request</h5>
+          
+          {% if user.is_authenticated %}
+            <form method="post" class="needs-validation" novalidate>
+              {% csrf_token %}
+              
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="check_in_date" class="form-label">Check-in Date</label>
+                  <input type="date" class="form-control" id="check_in_date" name="check_in_date" required>
+                  <small class="text-muted d-block">When do you plan to move in?</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="check_out_date" class="form-label">Check-out Date</label>
+                  <input type="date" class="form-control" id="check_out_date" name="check_out_date" required>
+                  <small class="text-muted d-block">When do you plan to move out?</small>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="number_of_rooms" class="form-label">Number of Rooms Needed</label>
+                <select class="form-select" id="number_of_rooms" name="number_of_rooms" required>
+                  <option value="1" selected>1 Room</option>
+                  <option value="2">2 Rooms</option>
+                  <option value="3">3 Rooms</option>
+                  <option value="4">4 Rooms</option>
+                  <option value="5">5+ Rooms</option>
+                </select>
+              </div>
+
+              <div class="mb-4">
+                <label for="notes" class="form-label">Additional Notes (Optional)</label>
+                <textarea class="form-control" id="notes" name="notes" rows="4" placeholder="Tell the owner about your requirements, roommates, or any special requests..."></textarea>
+              </div>
+
+              <div class="d-grid gap-2 d-md-flex">
+                <button type="submit" class="btn btn-success btn-lg">
+                  <i class="fas fa-paper-plane me-2"></i> Submit Booking Request
+                </button>
+                <a href="{% url 'listings:listing_detail' listing.pk %}" class="btn btn-outline-secondary btn-lg">
+                  Cancel
+                </a>
+              </div>
+            </form>
+          {% else %}
+            <div class="alert alert-info" role="alert">
+              <i class="fas fa-info-circle me-2"></i>
+              <strong>Please log in to submit a booking request.</strong>
+              <p class="mb-3">You need to be logged in as a student to book a hostel.</p>
+              <a href="{% url 'listings:home' %}" class="btn btn-info">
+                Go back to login
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="alert alert-light border-1 border-start-5 mt-4" role="alert">
+        <h6 class="alert-heading"><i class="fas fa-lightbulb text-warning me-2"></i> How it works</h6>
+        <ol class="mb-0 ps-3">
+          <li>Submit your booking request with your preferred dates</li>
+          <li>The hostel owner reviews your request</li>
+          <li>You'll receive a confirmation or rejection</li>
+          <li>Once confirmed, you can complete payment</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Simple form validation
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('.needs-validation');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      const checkIn = new Date(document.getElementById('check_in_date').value);
+      const checkOut = new Date(document.getElementById('check_out_date').value);
+      
+      if (checkOut <= checkIn) {
+        e.preventDefault();
+        alert('Check-out date must be after check-in date');
+      }
+    });
+  }
+});
+</script>
+{% endblock %}
