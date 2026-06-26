@@ -4,7 +4,8 @@ from .models import CustomUser
 
 
 class CustomUserCreationForm(UserCreationForm):
-    """Registration form for both students and hostel owners."""
+    """Registration form for students only (owners cannot register via UI)."""
+
 
     email = forms.EmailField(
         required=True,
@@ -20,12 +21,10 @@ class CustomUserCreationForm(UserCreationForm):
         required=True,
         widget=forms.TextInput(attrs={'placeholder': 'Last name'}),
     )
-    user_type = forms.ChoiceField(
-        choices=CustomUser.UserType.choices,
-        widget=forms.RadioSelect,
-        initial=CustomUser.UserType.STUDENT,
-        label="I am a",
-    )
+    # Only students can register via the UI.
+    # Owner accounts should be created by an admin/seed script.
+    user_type = forms.CharField(initial=CustomUser.UserType.STUDENT, widget=forms.HiddenInput())
+
 
     class Meta(UserCreationForm.Meta):
         model = CustomUser
@@ -34,7 +33,9 @@ class CustomUserCreationForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
-        user.user_type = self.cleaned_data['user_type']
+        user.user_type = CustomUser.UserType.STUDENT
+
+
 
         # student_id removed from registration UI/backend validation.
         user.student_id = None

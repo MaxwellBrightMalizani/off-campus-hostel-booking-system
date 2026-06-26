@@ -4,7 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
-from accounts.decorators import owner_required
+from accounts.decorators import owner_required, student_required
+
 
 from .forms import ListingForm
 from .models import Booking, Listing
@@ -73,8 +74,9 @@ def listing_detail(request, pk):
     })
 
 
-@login_required
+@student_required
 def create_booking(request, pk):
+
     if request.method != 'POST':
         return redirect('listings:listing_detail', pk=pk)
 
@@ -120,14 +122,16 @@ def create_booking(request, pk):
     return redirect('listings:booking_dashboard')
 
 
-@login_required
+@student_required
 def booking_dashboard(request):
+
     bookings = Booking.objects.filter(user=request.user).select_related('listing')
     return render(request, 'bookings/dashboard.html', {'bookings': bookings})
 
 
-@login_required
+@student_required
 def cancel_booking(request, booking_id):
+
     booking = get_object_or_404(Booking, pk=booking_id, user=request.user)
     if booking.status != Booking.STATUS_PENDING:
         messages.warning(request, 'Only pending bookings can be canceled.')

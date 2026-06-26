@@ -6,7 +6,8 @@ from .forms import CustomUserCreationForm, EmailLoginForm
 
 
 def register_view(request):
-    """Handles registration for both students and hostel owners."""
+    """Student-only registration UI. Owner accounts should be created by admin/seed."""
+
     if request.user.is_authenticated:
         return redirect('listings:home')
 
@@ -26,6 +27,7 @@ def register_view(request):
 
 
 def login_view(request):
+
     """Handles login using email and password."""
     if request.user.is_authenticated:
         return redirect('listings:home')
