@@ -4,18 +4,20 @@
 
 {% block content %}
 <div class="container py-4">
+
   <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
     <div>
-      <h1 class="mb-1">Owner Dashboard</h1>
-      <p class="text-muted mb-0">Review booking requests for your hostels and approve/decline them.</p>
+      <h1 class="mb-1">DASHBOARD</h1>
     </div>
+
     <div class="d-flex gap-2 flex-wrap">
       <a class="btn btn-outline-success" href="{% url 'listings:owner_property_list' %}">Manage Hostels</a>
-      <a class="btn btn-outline-primary" href="{% url 'listings:home' %}">Go to Home</a>
+      <a class="btn btn-outline-primary" href="{% url 'listings:home' %}">Home</a>
+      <a class="btn btn-outline-secondary" href="{% url 'listings:listing_list' %}">Listings</a>
     </div>
-
   </div>
 
+  {# bookings is passed from the view; when empty show a single info message #}
   {% if bookings %}
     {% for listing in listings %}
       <div class="card mb-4">
@@ -39,12 +41,14 @@
                 </tr>
               </thead>
               <tbody>
+                {# Filter bookings for the current listing #}
                 {% for booking in bookings %}
                   {% if booking.listing_id == listing.id %}
                     <tr>
                       <td>{{ booking.user.email }}</td>
                       <td>{{ booking.created_at|date:'M d, Y H:i' }}</td>
                       <td>
+                        {# Status badge #}
                         {% if booking.status == 'pending' %}
                           <span class="badge bg-warning text-dark">Pending</span>
                         {% elif booking.status == 'approved' %}
@@ -57,18 +61,24 @@
                           <span class="badge bg-secondary">{{ booking.status }}</span>
                         {% endif %}
                       </td>
+
                       <td class="text-end">
+                        {# Only pending requests can be decided #}
                         {% if booking.status == 'pending' %}
-                          <form method="post" action="{% url 'listings:owner_booking_decide' booking.id %}" class="d-inline">
-                            {% csrf_token %}
-                            <input type="hidden" name="action" value="approve" />
-                            <button type="submit" class="btn btn-sm btn-success me-2">Approve</button>
-                          </form>
-                          <form method="post" action="{% url 'listings:owner_booking_decide' booking.id %}" class="d-inline">
-                            {% csrf_token %}
-                            <input type="hidden" name="action" value="decline" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger">Decline</button>
-                          </form>
+                          {# Flex wrapper prevents Approve/Decline overlap #}
+                          <div class="d-flex justify-content-end gap-2">
+                            <form method="post" action="{% url 'listings:owner_booking_decide' booking.id %}" class="m-0">
+                              {% csrf_token %}
+                              <input type="hidden" name="action" value="approve" />
+                              <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                            </form>
+
+                            <form method="post" action="{% url 'listings:owner_booking_decide' booking.id %}" class="m-0">
+                              {% csrf_token %}
+                              <input type="hidden" name="action" value="decline" />
+                              <button type="submit" class="btn btn-sm btn-outline-danger">Decline</button>
+                            </form>
+                          </div>
                         {% else %}
                           <span class="text-muted">No action</span>
                         {% endif %}
@@ -79,9 +89,6 @@
               </tbody>
             </table>
           </div>
-          {% if not bookings %}
-            <div class="alert alert-info mt-3">No booking requests yet for this hostel.</div>
-          {% endif %}
         </div>
       </div>
     {% endfor %}
@@ -90,4 +97,5 @@
   {% endif %}
 </div>
 {% endblock %}
+
 

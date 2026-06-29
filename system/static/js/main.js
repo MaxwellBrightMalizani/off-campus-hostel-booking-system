@@ -92,11 +92,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const darkMode = savedTheme === 'dark';
     setTheme(darkMode);
 
-    themeToggle.addEventListener('click', function() {
+    themeToggle.addEventListener('click', function(e) {
+      e.preventDefault();
       const isDark = document.body.classList.toggle('dark-mode');
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
       setTheme(isDark);
     });
+
   }
 });
 

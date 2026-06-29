@@ -1,0 +1,94 @@
+[
+{
+  "model": "listings.listing",
+  "pk": 1,
+  "fields": {
+    "owner": null,
+    "title": "Cozy shared room near campus",
+    "description": "A quiet room with study space, free Wi-Fi, and easy access to local shops.",
+    "price": "150.00",
+    "address": "123 College Lane, Near Campus",
+    "created_at": "2026-06-21T13:13:11.176Z"
+  }
+},
+{
+  "model": "listings.listing",
+  "pk": 2,
+  "fields": {
+    "owner": 8,
+    "title": "Vab Hostels",
+    "description": "first choice for students aiming good grades",
+    "price": "45000.00",
+    "address": "around campus",
+    "created_at": "2026-06-26T13:47:38.893Z"
+  }
+},
+{
+  "model": "listings.listing",
+  "pk": 3,
+  "fields": {
+    "owner": 7,
+    "title": "Dzidyana Girls",
+    "description": "full water and electricity backups",
+    "price": "55000.00",
+    "address": "near NRC campus",
+    "created_at": "2026-06-26T13:48:40.976Z"
+  }
+},
+{
+  "model": "listings.listing",
+  "pk": 4,
+  "fields": {
+    "owner": 7,
+    "title": "Kirki Range Hostels",
+    "description": "a queit place with all necessary materials for academic accomodation",
+    "price": "90000.00",
+    "address": "around Chitipi market",
+    "created_at": "2026-06-26T19:28:08.565Z"
+  }
+},
+{
+  "model": "listings.booking",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "listing": 1,
+    "status": "pending",
+    "created_at": "2026-06-21T13:13:12.624Z",
+    "updated_at": "2026-06-21T13:13:12.624Z"
+  }
+},
+{
+  "model": "listings.booking",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "listing": 3,
+    "status": "approved",
+    "created_at": "2026-06-26T13:50:15.760Z",
+    "updated_at": "2026-06-26T15:05:05.411Z"
+  }
+},
+{
+  "model": "listings.booking",
+  "pk": 3,
+  "fields": {
+    "user": 9,
+    "listing": 4,
+    "status": "pending",
+    "created_at": "2026-06-26T20:36:46.155Z",
+    "updated_at": "2026-06-26T20:36:46.155Z"
+  }
+},
+{
+  "model": "listings.booking",
+  "pk": 4,
+  "fields": {
+    "user": 9,
+    "listing": 2,
+    "status": "declined",
+    "created_at": "2026-06-26T20:37:10.768Z",
+    "updated_at": "2026-06-26T20:39:16.793Z"
+  }
+}
+]

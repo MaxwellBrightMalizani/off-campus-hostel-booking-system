@@ -25,10 +25,25 @@ class CustomUserCreationForm(UserCreationForm):
     # Owner accounts should be created by an admin/seed script.
     user_type = forms.CharField(initial=CustomUser.UserType.STUDENT, widget=forms.HiddenInput())
 
+    # Keep only password/confirm password *validation errors*.
+    # Remove default UserCreationForm help text/bullets.
+    password1 = forms.CharField(
+        label="Password",
+        strip=False,
+        widget=forms.PasswordInput(),
+        help_text="",
+    )
+    password2 = forms.CharField(
+        label="Confirm Password",
+        strip=False,
+        widget=forms.PasswordInput(),
+        help_text="",
+    )
 
     class Meta(UserCreationForm.Meta):
         model = CustomUser
         fields = ('email', 'first_name', 'last_name', 'user_type')
+
 
     def save(self, commit=True):
         user = super().save(commit=False)

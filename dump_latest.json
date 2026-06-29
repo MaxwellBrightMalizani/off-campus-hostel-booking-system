@@ -1,0 +1,265 @@
+[
+{
+  "model": "listings.listing",
+  "pk": 1,
+  "fields": {
+    "owner": null,
+    "title": "Cozy shared room near campus",
+    "description": "A quiet room with study space, free Wi-Fi, and easy access to local shops.",
+    "price": "150.00",
+    "address": "123 College Lane, Near Campus",
+    "created_at": "2026-06-21T13:13:11.176Z"
+  }
+},
+{
+  "model": "listings.listing",
+  "pk": 2,
+  "fields": {
+    "owner": 8,
+    "title": "Vab Hostels",
+    "description": "first choice for students aiming good grades",
+    "price": "45000.00",
+    "address": "around campus",
+    "created_at": "2026-06-26T13:47:38.893Z"
+  }
+},
+{
+  "model": "listings.listing",
+  "pk": 3,
+  "fields": {
+    "owner": 7,
+    "title": "Dzidyana Girls",
+    "description": "full water and electricity backups",
+    "price": "55000.00",
+    "address": "near NRC campus",
+    "created_at": "2026-06-26T13:48:40.976Z"
+  }
+},
+{
+  "model": "listings.listing",
+  "pk": 4,
+  "fields": {
+    "owner": 7,
+    "title": "Kirki Range Hostels",
+    "description": "a queit place with all necessary materials for academic accomodation",
+    "price": "90000.00",
+    "address": "around Chitipi market",
+    "created_at": "2026-06-26T19:28:08.565Z"
+  }
+},
+{
+  "model": "listings.booking",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "listing": 1,
+    "status": "pending",
+    "created_at": "2026-06-21T13:13:12.624Z",
+    "updated_at": "2026-06-21T13:13:12.624Z"
+  }
+},
+{
+  "model": "listings.booking",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "listing": 3,
+    "status": "approved",
+    "created_at": "2026-06-26T13:50:15.760Z",
+    "updated_at": "2026-06-26T15:05:05.411Z"
+  }
+},
+{
+  "model": "listings.booking",
+  "pk": 3,
+  "fields": {
+    "user": 9,
+    "listing": 4,
+    "status": "pending",
+    "created_at": "2026-06-26T20:36:46.155Z",
+    "updated_at": "2026-06-26T20:36:46.155Z"
+  }
+},
+{
+  "model": "listings.booking",
+  "pk": 4,
+  "fields": {
+    "user": 9,
+    "listing": 2,
+    "status": "declined",
+    "created_at": "2026-06-26T20:37:10.768Z",
+    "updated_at": "2026-06-26T20:39:16.793Z"
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$cJvmO0637PUbqHCzBIKjsY$7cfriCm1S+J0VgEbZPhRd7Wg46cUXv3sRWbmm96a20A=",
+    "last_login": "2026-06-19T17:55:18.123Z",
+    "is_superuser": false,
+    "first_name": "rgr",
+    "last_name": "htfytr",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-19T17:55:11.653Z",
+    "email": "fdgfdgdf@gmail.com",
+    "user_type": "student",
+    "student_id": "2424225",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$FpKPet1u95szjiHtiLiAPb$+TXxhD+QFa6N0lWSdOqNqUzDtXOs4uP5WTlEdinJOBI=",
+    "last_login": "2026-06-26T15:05:33.461Z",
+    "is_superuser": false,
+    "first_name": "max",
+    "last_name": "max",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-19T18:12:58.552Z",
+    "email": "max@gmail.com",
+    "user_type": "student",
+    "student_id": "1338657",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$WQTRAzJ0iDCqsRc4rNTVio$Pak4Vq1eAzlMokJTydzIQieAXdBKtGf4vcBcu5rOUB4=",
+    "last_login": "2026-06-25T09:23:49.940Z",
+    "is_superuser": false,
+    "first_name": "owner",
+    "last_name": "owner",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-21T13:15:31.821Z",
+    "email": "owner@gmail.com",
+    "user_type": "owner",
+    "student_id": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$vjaCM57C4JGH9SJcc8NNNf$39RYOjJyT/WUz7y5O7VZz9VenXZG5ukiC7BNV9eUzWo=",
+    "last_login": "2026-06-25T08:16:36.974Z",
+    "is_superuser": false,
+    "first_name": "land",
+    "last_name": "land",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-25T08:16:33.680Z",
+    "email": "land@gmail.com",
+    "user_type": "owner",
+    "student_id": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$nuJC8CCPF5niemeQw0Q4I0$hTHOodudR9H5Fssx2JTxmCjZIXZfs6wv0xV/OIlPY4A=",
+    "last_login": "2026-06-25T09:23:16.727Z",
+    "is_superuser": false,
+    "first_name": "ad",
+    "last_name": "min",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-25T08:19:22.320Z",
+    "email": "admin@gmail.com",
+    "user_type": "admin",
+    "student_id": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$acgTj2WpQhEatmI3JNUZQA$83O703w4+/gO3TZ+Evf2kS1QDC2uklxHc3apVSbRB2Q=",
+    "last_login": "2026-06-26T14:44:13.282Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-06-26T13:25:42.831Z",
+    "email": "super@gmail.com",
+    "user_type": "admin",
+    "student_id": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$ZBoEV0n0uAJ081kUpNimtH$yziVsfE0uMAXV8OUO4yw4tmASYptgyJwQLqf7v6LBmQ=",
+    "last_login": "2026-06-26T15:26:41.455Z",
+    "is_superuser": false,
+    "first_name": "Lauritta",
+    "last_name": "Blake",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-26T13:43:11Z",
+    "email": "laurittablake@gmail.com",
+    "user_type": "owner",
+    "student_id": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$0GDMorBRRHCQLyeJ6waYQS$e5SO/oRzSvdKBx2paX06G6ZWfls66C8HAX7+utNbThA=",
+    "last_login": "2026-06-26T20:37:58.554Z",
+    "is_superuser": false,
+    "first_name": "Justice",
+    "last_name": "Phiri",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-26T13:45:11Z",
+    "email": "justicephiri@gmail.com",
+    "user_type": "owner",
+    "student_id": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$gQ148d4lSKEjLEzI1aTs80$Q8ckMtLOw9c4rLquJZPu0b8xozo/rqXo9siOevu6bQ0=",
+    "last_login": "2026-06-26T20:40:13.572Z",
+    "is_superuser": false,
+    "first_name": "ab",
+    "last_name": "c",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-26T20:35:57.527Z",
+    "email": "abc@gmail.com",
+    "user_type": "student",
+    "student_id": null,
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
